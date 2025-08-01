@@ -30,6 +30,19 @@
 6. `ClaudeSystem/archive-tape-storyline.md` - 12-week content narrative
 7. `obsidian_ai-vault/ROSEYS-System-Overview.md` - Central dashboard
 
+## Key Conversations & Context
+
+### Important Memory Preservation Discussion
+**Context**: User realized chat history isn't automatically saved to Git, only files and commit messages
+**Decision**: Enhanced session logging system to capture important conversations
+**Implementation**: 
+- Added "Memory & Context Preservation" section to claude.md
+- Created enhanced session log template
+- Established protocol: Claude proactively offers to log important discussions
+- User can request with "save this to memory" or "log this conversation"
+
+**Why This Matters**: Ensures strategic discussions and context don't get lost between sessions
+
 ## Key Insights Captured
 
 ### Business Context Verified
