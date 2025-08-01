@@ -63,6 +63,27 @@ cd C:\claude_home
 
 **User Should Update Their Instructions Document** with the corrected startup procedure.
 
+### ElevenLabs Voice Integration Setup
+**User Request**: Add ElevenLabs voice so they can hear Claude's responses
+**Implementation**: Created complete Python-based TTS system
+**Files Created**:
+- `ClaudeSystem/elevenlabs-integration.md` - Full documentation
+- `scripts/text_to_speech.py` - Main voice script with ElevenLabs API integration
+- `scripts/requirements.txt` - Python dependencies (requests, pygame)
+- `scripts/setup_voice.bat` - Automated setup script
+- `speak.bat` - Easy wrapper for voice commands
+
+**Setup Process**:
+1. Get ElevenLabs API key from elevenlabs.io
+2. Run `scripts/setup_voice.bat` to install dependencies
+3. Set environment variable: `set ELEVENLABS_API_KEY=your_key`
+4. Test with: `.\speak.bat "Hello world"`
+
+**Usage During Sessions**: `.\speak.bat "text to speak"`
+**Voice**: Default Rachel (professional female), customizable via ELEVENLABS_VOICE_ID
+
+**Benefits**: Real-time audio feedback during work sessions, better accessibility, more engaging collaboration
+
 ## Key Insights Captured
 
 ### Business Context Verified
