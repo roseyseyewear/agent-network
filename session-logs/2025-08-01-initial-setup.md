@@ -43,6 +43,26 @@
 
 **Why This Matters**: Ensures strategic discussions and context don't get lost between sessions
 
+### Critical Startup Procedure Resolution
+**Problem**: User's startup instructions failed - `--context` flag doesn't exist in Claude Code
+**Troubleshooting**: Checked `.\claude.bat --help` to find correct flags
+**Solution Found**: Use continuation flags instead of context loading
+
+**CORRECTED Startup Instructions**:
+```bash
+cd C:\claude_home
+.\claude.bat -c
+```
+
+**Alternative Options**:
+- `.\claude.bat -r` (resume with interactive selection)
+- `.\claude.bat --settings ClaudeSystem\claude.md` (if settings format works)
+
+**Key Discovery**: `-c, --continue` flag continues most recent conversation with full context
+**Why This Works**: Preserves all session context, file access, and conversation history
+
+**User Should Update Their Instructions Document** with the corrected startup procedure.
+
 ## Key Insights Captured
 
 ### Business Context Verified
