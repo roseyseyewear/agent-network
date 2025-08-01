@@ -1,0 +1,28 @@
+# Claude Code specific
+.claude/
+claude.bat
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
+
+# Sensitive files (add any API keys, credentials, etc.)
+*.env
+.env.*
+secrets/
+credentials/
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.directory
