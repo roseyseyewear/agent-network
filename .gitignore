@@ -9,9 +9,14 @@ Thumbs.db
 
 # Sensitive files (add any API keys, credentials, etc.)
 *.env
+.env
 .env.*
 secrets/
 credentials/
+
+# ElevenLabs API keys (NEVER COMMIT THESE)
+ELEVENLABS_API_KEY
+ELEVENLABS_VOICE_ID
 
 # Temporary files
 *.tmp

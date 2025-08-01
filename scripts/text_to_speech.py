@@ -11,6 +11,10 @@ import json
 from pathlib import Path
 import pygame
 import io
+from load_env import load_env
+
+# Load environment variables from .env file
+load_env()
 
 class ElevenLabsTTS:
     def __init__(self):
