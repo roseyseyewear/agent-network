@@ -67,17 +67,17 @@ def main():
     
     try:
         if command == 'start':
-            print("🚀 Starting Hannah Assistant Task Coordination Session...")
+            print("Starting Hannah Assistant Task Coordination Session...")
             coordinator = TaskCoordinatorAgent()
             coordinator.start_coordination_session()
             
         elif command == 'status':
-            print("📊 Getting status update from all agents...")
+            print("Getting status update from all agents...")
             coordinator = TaskCoordinatorAgent()
             coordinator.provide_status_update()
             
         elif command == 'feedback':
-            print("🤖 Running automated feedback analysis...")
+            print("Running automated feedback analysis...")
             feedback_system = AgentFeedbackSystem()
             print(feedback_system.provide_automated_feedback())
             
@@ -87,10 +87,10 @@ def main():
             sys.exit(1)
             
     except KeyboardInterrupt:
-        print("\n\n👋 Session ended by user. Goodbye!")
+        print("\n\nSession ended by user. Goodbye!")
         sys.exit(0)
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\nError: {e}")
         print("Please check your ClickUp API configuration and try again.")
         sys.exit(1)
 

@@ -114,30 +114,30 @@ class TaskCoordinatorAgent:
         
         # Urgent items first
         if current_tasks.get('urgent_in_progress'):
-            print(f"\n🔥 URGENT - IN PROGRESS ({len(current_tasks['urgent_in_progress'])} tasks):")
+            print(f"\n[URGENT] IN PROGRESS ({len(current_tasks['urgent_in_progress'])} tasks):")
             for task in current_tasks['urgent_in_progress']:
-                print(f"  • {task['name']}")
+                print(f"  * {task['name']}")
                 print(f"    Status: {task['status']['status']} | Assignees: {', '.join([a.get('username', 'Unknown') for a in task.get('assignees', [])])}")
         
         if current_tasks.get('urgent_review'):
-            print(f"\n⚠️  URGENT - AWAITING REVIEW ({len(current_tasks['urgent_review'])} tasks):")
+            print(f"\n[URGENT] AWAITING REVIEW ({len(current_tasks['urgent_review'])} tasks):")
             for task in current_tasks['urgent_review']:
-                print(f"  • {task['name']}")
+                print(f"  * {task['name']}")
         
         if current_tasks.get('high_priority'):
-            print(f"\n📋 HIGH PRIORITY ({len(current_tasks['high_priority'])} tasks):")
+            print(f"\n[HIGH PRIORITY] ({len(current_tasks['high_priority'])} tasks):")
             for task in current_tasks['high_priority'][:5]:  # Show top 5
-                print(f"  • {task['name']}")
+                print(f"  * {task['name']}")
         
         if current_tasks.get('ready_to_start'):
-            print(f"\n✅ READY TO START ({len(current_tasks['ready_to_start'])} tasks):")
+            print(f"\n[READY TO START] ({len(current_tasks['ready_to_start'])} tasks):")
             for task in current_tasks['ready_to_start'][:3]:  # Show top 3
-                print(f"  • {task['name']}")
+                print(f"  * {task['name']}")
         
         if current_tasks.get('waiting_on_others'):
-            print(f"\n⏳ WAITING ON OTHERS ({len(current_tasks['waiting_on_others'])} tasks):")
+            print(f"\n[WAITING ON OTHERS] ({len(current_tasks['waiting_on_others'])} tasks):")
             for task in current_tasks['waiting_on_others'][:3]:
-                print(f"  • {task['name']}")
+                print(f"  * {task['name']}")
     
     def _interactive_prioritization(self):
         """Interactive session to get user input on priorities"""
