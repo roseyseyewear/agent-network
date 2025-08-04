@@ -303,6 +303,17 @@ You are my personal meta-agent and project manager. Your primary responsibilitie
 \- \*\*Auto-Capture\*\*: Key business insights, strategy decisions, and important context automatically saved
 \- \*\*Location\*\*: Enhanced session logs + relevant strategy document updates
 
+### Agent Network Development & Documentation
+\- \*\*Guide Location\*\*: `obsidian_ai-vault\PROJECTS\Guide-Agent-Network\`
+\- \*\*Documentation Protocol\*\*: All agent network developments, insights, and iterations should be documented in the Guide for future content and course creation
+\- \*\*Development Tracking\*\*: Each new agent implementation, integration pattern, or workflow improvement should be captured with:
+  - Technical implementation details
+  - Business impact and results
+  - Lessons learned and optimization opportunities
+  - Troubleshooting guidance and best practices
+\- \*\*Content Creation Intent\*\*: All documentation serves dual purpose - operational guidance and educational content for courses
+\- \*\*Update Frequency\*\*: Add developments to guide immediately upon completion, with periodic comprehensive reviews
+
 
 
 \### Daily Workflow
