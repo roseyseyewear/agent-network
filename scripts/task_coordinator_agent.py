@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from typing import Dict, List, Optional, Any
 import time
+from product_search_agent import ProductSearchAgent
 
 load_dotenv()
 
@@ -32,7 +33,8 @@ class TaskCoordinatorAgent:
             'calendar': CalendarAgent(self),
             'email': EmailAgent(self),
             'business': BusinessOperationsAgent(self),
-            'admin': AdministrativeAgent(self)
+            'admin': AdministrativeAgent(self),
+            'product_search': ProductSearchAgent(self)
         }
     
     def _load_task_analysis(self) -> Dict:
@@ -261,6 +263,52 @@ class TaskCoordinatorAgent:
                 print(f"  Status: {status['current_status']}")
                 if status['needs_attention']:
                     print(f"  ⚠️  Needs Attention: {status['needs_attention']}")
+    
+    def run_product_search(self):
+        """Run product search with predefined requirements"""
+        print("="*60)
+        print("PRODUCT SEARCH AGENT")
+        print("="*60)
+        
+        # Default search requests for your requirements
+        search_requests = [
+            {
+                "product_type": "USB-C cable",
+                "specifications": ["fast charging", "Meta Quest compatible", "laptop connection", "Immersed VR"],
+                "shipping_requirements": {"location": "London", "speed": "fast"},
+                "additional_criteria": ["high-speed data transfer"]
+            },
+            {
+                "product_type": "magnesium glycinate",
+                "brand": "Pure Encapsulations", 
+                "shipping_requirements": {"location": "London", "speed": "next day"},
+                "additional_criteria": ["shipped within England preferred"]
+            },
+            {
+                "product_type": "vitamin D",
+                "brand": "Pure Encapsulations",
+                "shipping_requirements": {"location": "UK", "speed": "fast"}
+            },
+            {
+                "product_type": "creatine",
+                "specifications": ["best form", "capsules preferred", "effectiveness research"],
+                "brand": "Rhonda Patrick recommended",
+                "shipping_requirements": {"location": "UK", "speed": "fast"}
+            }
+        ]
+        
+        # Run the search
+        product_agent = self.specialized_agents['product_search']
+        results = product_agent.search_products(search_requests)
+        
+        # Display formatted results
+        print("\n" + product_agent.format_results_for_purchase(results))
+        
+        # Save results
+        filename = product_agent.save_search_results(results)
+        print(f"[SAVED] Results saved to: {filename}")
+        
+        return results
     
     def _get_priority_level(self, priority_obj):
         """Extract priority level from ClickUp priority object"""

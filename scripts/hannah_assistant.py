@@ -21,12 +21,14 @@ COMMANDS:
   start           Start interactive task coordination session (default)
   status          Get current status update from all agents
   feedback        Run automated feedback analysis
+  product_search  Run product search with specific requirements
   help            Show this help message
 
 EXAMPLES:
   python hannah_assistant.py                 # Start coordination session
   python hannah_assistant.py status          # Quick status check
   python hannah_assistant.py feedback        # Get automated feedback
+  python hannah_assistant.py product_search  # Run product searches
 
 DESCRIPTION:
   The Hannah Assistant system helps prioritize and execute tasks through:
@@ -44,6 +46,7 @@ DESCRIPTION:
      - Email Agent: Handles communication and follow-ups
      - Business Agent: Manages Roseys and Luna Wild business tasks
      - Admin Agent: Handles administrative and legal tasks
+     - Product Search Agent: Finds products with specific requirements
   
   📊 Automated Feedback System:
      - Monitors task progress and identifies stuck tasks
@@ -80,6 +83,11 @@ def main():
             print("Running automated feedback analysis...")
             feedback_system = AgentFeedbackSystem()
             print(feedback_system.provide_automated_feedback())
+            
+        elif command == 'product_search':
+            print("Running product search agent...")
+            coordinator = TaskCoordinatorAgent()
+            coordinator.run_product_search()
             
         else:
             print(f"Unknown command: {command}")
