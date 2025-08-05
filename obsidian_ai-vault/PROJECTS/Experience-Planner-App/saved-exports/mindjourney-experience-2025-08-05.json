@@ -1,0 +1,132 @@
+{
+  "experience": "MindJourney",
+  "version": "2.0",
+  "steps": [
+    {
+      "id": 1,
+      "title": "Welcome Screen",
+      "videoUrl": "",
+      "duration": "3s",
+      "copy": "Share Your Hypothesis\n\nPress Play to Begin\n\nLevel 1 of ? • Estimated time: 3 mins",
+      "cta": "Press Play to Begin",
+      "userInput": "button",
+      "branches": []
+    },
+    {
+      "id": 2,
+      "title": "Level 1 Video",
+      "videoUrl": "./00_imports/MindJourney-v1/client/public/videos/level1.mp4",
+      "duration": "60s",
+      "copy": "[Main video content plays]",
+      "cta": "Auto-transition",
+      "userInput": "",
+      "branches": []
+    },
+    {
+      "id": 3,
+      "title": "Hypothesis Chat",
+      "videoUrl": "./00_imports/MindJourney-v1/client/public/videos/chat-loop.mp4",
+      "duration": "120s",
+      "copy": "Hello Visitor,\n\nShare your hypothesis to continue. What will you see wearing rose colored glasses? What will you feel?",
+      "cta": "Send Response",
+      "userInput": "multimodal",
+      "branches": [
+        {
+          "condition": "contains",
+          "value": "positive",
+          "nextStep": 4
+        },
+        {
+          "condition": "contains",
+          "value": "negative",
+          "nextStep": 5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Post-Submission",
+      "videoUrl": "./00_imports/MindJourney-v1/client/public/videos/hypothesis-post-submission.mp4",
+      "duration": "30s",
+      "copy": "Thank you for participating... your profile has been created.",
+      "cta": "Continue",
+      "userInput": "",
+      "branches": []
+    },
+    {
+      "id": 5,
+      "title": "Level Complete",
+      "videoUrl": "",
+      "duration": "15s",
+      "copy": "Level 1 Complete",
+      "cta": "Select a Frame / Find The Lab",
+      "userInput": "button",
+      "branches": []
+    },
+    {
+      "id": 1754402345143,
+      "title": "Find The Lab",
+      "videoUrl": "",
+      "duration": "10",
+      "copy": "A pyramid appears. What do you do?",
+      "cta": "Approach / Flee",
+      "userInput": "button",
+      "branches": [
+        {
+          "condition": "contains",
+          "value": "Open",
+          "nextStep": 1754402643962
+        }
+      ]
+    },
+    {
+      "id": 1754402459932,
+      "title": "Pyramid",
+      "videoUrl": "",
+      "duration": "",
+      "copy": "You notice a door. What do you do?",
+      "cta": "Open/Knock",
+      "userInput": "button",
+      "branches": []
+    },
+    {
+      "id": 1754402643962,
+      "title": "Locked Door",
+      "videoUrl": "",
+      "duration": "",
+      "copy": "Welcome Visitor. Respond to enter. Have you worn rose colored glasses before?",
+      "cta": "Yes/No",
+      "userInput": "button",
+      "branches": []
+    },
+    {
+      "id": 1754402352997,
+      "title": "Select a Frame",
+      "videoUrl": "",
+      "duration": "",
+      "copy": "",
+      "cta": "",
+      "userInput": "",
+      "branches": []
+    },
+    {
+      "id": 1754403554924,
+      "title": "New Step 10",
+      "videoUrl": "",
+      "duration": "",
+      "copy": "",
+      "cta": "",
+      "userInput": "",
+      "branches": []
+    }
+  ],
+  "statistics": {
+    "totalSteps": 10,
+    "totalDuration": "3m 58s",
+    "videoCount": 3,
+    "interactionCount": 6,
+    "branchingPoints": 2,
+    "completionRate": 68
+  },
+  "exportedAt": "2025-08-05T14:19:19.451Z"
+}

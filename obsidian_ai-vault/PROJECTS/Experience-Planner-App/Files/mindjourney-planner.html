@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindJourney Experience Planner</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [v-cloak] { display: none; }
+        .video-preview {
+            transition: all 0.3s ease;
+        }
+        .video-preview:hover {
+            transform: scale(1.05);
+        }
+        .step-row {
+            transition: all 0.2s ease;
+        }
+        .step-row:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .table-container {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app" v-cloak class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">MindJourney Experience Planner</h1>
+                        <p class="text-gray-600">Plan your multi-level interactive experience</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button @click="addStep" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            + Add Step
+                        </button>
+                        <button @click="exportData" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                            Export JSON
+                        </button>
+                        <button @click="showVideoLibrary = true" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                            Video Library
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-6">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="table-container">
+                    <table class="w-full">
+                        <!-- Sticky Header -->
+                        <thead class="sticky-header">
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left p-4 font-semibold text-gray-700 w-16">#</th>
+                                <th class="text-left p-4 font-semibold text-gray-700 w-48">Title</th>
+                                <th class="text-left p-4 font-semibold text-gray-700 w-32">Visual</th>
+                                <th class="text-left p-4 font-semibold text-gray-700 w-24">Duration</th>
+                                <th class="text-left p-4 font-semibold text-gray-700">Copy</th>
+                                <th class="text-left p-4 font-semibold text-gray-700 w-32">CTA</th>
+                                <th class="text-left p-4 font-semibold text-gray-700 w-40">User Input</th>
+                                <th class="text-left p-4 font-semibold text-gray-700 w-20">Actions</th>
+                            </tr>
+                        </thead>
+                        
+                        <!-- Table Body -->
+                        <tbody>
+                            <tr v-for="(step, index) in steps" :key="step.id" class="step-row border-b border-gray-100">
+                                <!-- Step Number -->
+                                <td class="p-4">
+                                    <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center font-semibold">
+                                        {{ index + 1 }}
+                                    </div>
+                                </td>
+                                
+                                <!-- Title -->
+                                <td class="p-4">
+                                    <input 
+                                        v-model="step.title" 
+                                        class="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Step title..."
+                                    />
+                                </td>
+                                
+                                <!-- Visual/Video -->
+                                <td class="p-4">
+                                    <div v-if="step.videoUrl" class="relative">
+                                        <video 
+                                            :src="step.videoUrl" 
+                                            class="w-24 h-16 object-cover rounded-lg cursor-pointer video-preview"
+                                            @click="previewVideo(step.videoUrl)"
+                                            muted
+                                        ></video>
+                                        <div class="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M6.3 2.84A1 1 0 004 3.75v12.5a1 1 0 001.6.8l10-6.25a1 1 0 000-1.6l-10-6.25a1 1 0 00-1.3.04z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        v-else
+                                        @click="selectVideo(step.id)"
+                                        class="w-24 h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-blue-400 transition-colors"
+                                    >
+                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                    </button>
+                                </td>
+                                
+                                <!-- Duration -->
+                                <td class="p-4">
+                                    <input 
+                                        v-model="step.duration" 
+                                        class="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="30s"
+                                    />
+                                </td>
+                                
+                                <!-- Copy -->
+                                <td class="p-4">
+                                    <textarea 
+                                        v-model="step.copy" 
+                                        class="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                        rows="3"
+                                        placeholder="What text/narration appears..."
+                                    ></textarea>
+                                </td>
+                                
+                                <!-- CTA -->
+                                <td class="p-4">
+                                    <input 
+                                        v-model="step.cta" 
+                                        class="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Button text..."
+                                    />
+                                </td>
+                                
+                                <!-- User Input -->
+                                <td class="p-4">
+                                    <select 
+                                        v-model="step.userInput" 
+                                        class="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                        <option value="">None</option>
+                                        <option value="button">Button Click</option>
+                                        <option value="text">Text Input</option>
+                                        <option value="voice">Voice Recording</option>
+                                        <option value="photo">Photo Upload</option>
+                                        <option value="video">Video Upload</option>
+                                        <option value="multimodal">Multiple Options</option>
+                                    </select>
+                                </td>
+                                
+                                <!-- Actions -->
+                                <td class="p-4">
+                                    <div class="flex gap-2">
+                                        <button @click="moveUp(index)" :disabled="index === 0" class="text-gray-400 hover:text-blue-600 disabled:opacity-30">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                            </svg>
+                                        </button>
+                                        <button @click="moveDown(index)" :disabled="index === steps.length - 1" class="text-gray-400 hover:text-blue-600 disabled:opacity-30">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <button @click="deleteStep(index)" class="text-gray-400 hover:text-red-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- Video Library Modal -->
+        <div v-if="showVideoLibrary" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-semibold">Video Library</h2>
+                        <button @click="showVideoLibrary = false" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-[70vh]">
+                    <div class="video-grid">
+                        <div v-for="video in availableVideos" :key="video.filename" class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" @click="selectVideoFromLibrary(video)">
+                            <video :src="video.url" class="w-full h-32 object-cover" muted></video>
+                            <div class="p-3">
+                                <h3 class="font-medium text-sm">{{ video.name }}</h3>
+                                <p class="text-xs text-gray-500">{{ video.filename }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Preview Modal -->
+        <div v-if="previewVideoUrl" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full">
+                <div class="p-4 border-b flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">Video Preview</h2>
+                    <button @click="previewVideoUrl = null" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <video :src="previewVideoUrl" controls class="w-full rounded-lg"></video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    showVideoLibrary: false,
+                    previewVideoUrl: null,
+                    selectedStepId: null,
+                    steps: [
+                        {
+                            id: 1,
+                            title: 'Welcome Screen',
+                            videoUrl: '',
+                            duration: '3s',
+                            copy: 'Share Your Hypothesis\n\nPress Play to Begin\n\nLevel 1 of ? • Estimated time: 3 mins',
+                            cta: 'Press Play to Begin',
+                            userInput: 'button'
+                        },
+                        {
+                            id: 2,
+                            title: 'Level 1 Video',
+                            videoUrl: '/videos/level1.mp4',
+                            duration: '60s',
+                            copy: '[Main video content plays]',
+                            cta: 'Auto-transition',
+                            userInput: ''
+                        },
+                        {
+                            id: 3,
+                            title: 'Hypothesis Chat',
+                            videoUrl: '/videos/chat-loop.mp4',
+                            duration: '120s',
+                            copy: 'Hello Visitor,\n\nShare your hypothesis to continue. What will you see wearing rose colored glasses? What will you feel?',
+                            cta: 'Send Response',
+                            userInput: 'multimodal'
+                        },
+                        {
+                            id: 4,
+                            title: 'Post-Submission',
+                            videoUrl: '/videos/hypothesis-post-submission.mp4',
+                            duration: '30s',
+                            copy: 'Thank you for participating... your profile has been created.',
+                            cta: 'Continue',
+                            userInput: ''
+                        },
+                        {
+                            id: 5,
+                            title: 'Level Complete',
+                            videoUrl: '',
+                            duration: '15s',
+                            copy: 'Level 1 Complete',
+                            cta: 'Select a Frame / Find The Lab',
+                            userInput: 'button'
+                        }
+                    ],
+                    availableVideos: [
+                        { filename: 'level1-welcome.mp4', name: 'Level 1 Welcome', url: '/videos/level1-welcome.mp4' },
+                        { filename: 'level1.mp4', name: 'Level 1 Main', url: '/videos/level1.mp4' },
+                        { filename: 'level2.mp4', name: 'Level 2 Main', url: '/videos/level2.mp4' },
+                        { filename: 'level3.mp4', name: 'Level 3 Main', url: '/videos/level3.mp4' },
+                        { filename: 'level4.mp4', name: 'Level 4 Main', url: '/videos/level4.mp4' },
+                        { filename: 'level5.mp4', name: 'Level 5 Main', url: '/videos/level5.mp4' },
+                        { filename: 'chat-loop.mp4', name: 'Chat Background', url: '/videos/chat-loop.mp4' },
+                        { filename: 'level1-chat-loop.mp4', name: 'Level 1 Chat Loop', url: '/videos/level1-chat-loop.mp4' },
+                        { filename: 'level1-forest.mp4', name: 'Level 1 Forest', url: '/videos/level1-forest.mp4' },
+                        { filename: 'hypothesis-post-submission.mp4', name: 'Post Submission', url: '/videos/hypothesis-post-submission.mp4' }
+                    ]
+                }
+            },
+            methods: {
+                addStep() {
+                    const newStep = {
+                        id: Date.now(),
+                        title: `New Step ${this.steps.length + 1}`,
+                        videoUrl: '',
+                        duration: '',
+                        copy: '',
+                        cta: '',
+                        userInput: ''
+                    };
+                    this.steps.push(newStep);
+                },
+                deleteStep(index) {
+                    if (confirm('Are you sure you want to delete this step?')) {
+                        this.steps.splice(index, 1);
+                    }
+                },
+                moveUp(index) {
+                    if (index > 0) {
+                        const temp = this.steps[index];
+                        this.steps[index] = this.steps[index - 1];
+                        this.steps[index - 1] = temp;
+                    }
+                },
+                moveDown(index) {
+                    if (index < this.steps.length - 1) {
+                        const temp = this.steps[index];
+                        this.steps[index] = this.steps[index + 1];
+                        this.steps[index + 1] = temp;
+                    }
+                },
+                selectVideo(stepId) {
+                    this.selectedStepId = stepId;
+                    this.showVideoLibrary = true;
+                },
+                selectVideoFromLibrary(video) {
+                    if (this.selectedStepId) {
+                        const step = this.steps.find(s => s.id === this.selectedStepId);
+                        if (step) {
+                            step.videoUrl = video.url;
+                        }
+                    }
+                    this.showVideoLibrary = false;
+                    this.selectedStepId = null;
+                },
+                previewVideo(url) {
+                    this.previewVideoUrl = url;
+                },
+                exportData() {
+                    const data = {
+                        experience: 'MindJourney',
+                        steps: this.steps,
+                        exportedAt: new Date().toISOString()
+                    };
+                    
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'mindjourney-experience.json';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
