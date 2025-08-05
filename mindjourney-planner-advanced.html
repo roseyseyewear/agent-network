@@ -105,9 +105,13 @@
                         <button @click="showVideoLibrary = true" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
                             📹 Videos
                         </button>
+                        <button @click="$refs.importInput.click()" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
+                            📥 Import
+                        </button>
                         <button @click="exportData" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
                             💾 Export
                         </button>
+                        <input ref="importInput" type="file" accept=".json" class="hidden" @change="importData">
                     </div>
                 </div>
             </div>
@@ -982,6 +986,30 @@
                     a.download = `mindjourney-experience-${new Date().toISOString().split('T')[0]}.json`;
                     a.click();
                     URL.revokeObjectURL(url);
+                },
+                
+                importData(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            if (data.steps && Array.isArray(data.steps)) {
+                                this.steps = data.steps;
+                                alert('Import successful! Your experience has been loaded.');
+                            } else {
+                                alert('Invalid file format. Please select a valid experience JSON file.');
+                            }
+                        } catch (error) {
+                            alert('Error reading file. Please make sure it\'s a valid JSON file.');
+                        }
+                    };
+                    reader.readAsText(file);
+                    
+                    // Reset the input so the same file can be selected again
+                    event.target.value = '';
                 },
                 
                 saveToLocalStorage() {
