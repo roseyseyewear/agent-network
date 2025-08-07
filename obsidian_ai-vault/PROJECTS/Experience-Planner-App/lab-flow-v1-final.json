@@ -1,0 +1,244 @@
+{
+  "experienceName": "ROSEYS Lab Experience V1 - 4 Hour Build",
+  "description": "Minimal viable lab extension using existing MindJourney infrastructure",
+  "buildTime": "4 hours",
+  "leveragesExisting": [
+    "Find The Lab button (already built)",
+    "Video infrastructure and player",
+    "Chat system for visitor tour", 
+    "Database branching logic",
+    "Existing website content for research materials"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Find The Lab (Entry Point)",
+      "visual": "Existing level completion screen",
+      "playback": "Current post-hypothesis video",
+      "copy": "Level Complete! You've unlocked access to The Lab.",
+      "cta": "Find The Lab",
+      "userInput": "button",
+      "branches": [2],
+      "implementation": "Hook existing 'Find The Lab' button to lab navigation"
+    },
+    {
+      "id": 2, 
+      "title": "Lab Entrance - Rose-Colored Glasses Question",
+      "visual": "Dark lab exterior with glowing entry portal",
+      "playback": "level1-welcome.mp4 (repurposed as lab entrance)",
+      "copy": "To enter The Lab, we need to know: Have you ever worn rose-colored glasses?",
+      "cta": "Yes, I have / No, I haven't / I'm curious what they are",
+      "userInput": "selection",
+      "branches": [3, 3, 3],
+      "implementation": "Simple 3-option selection, all lead to same destination"
+    },
+    {
+      "id": 3,
+      "title": "Lab Atrium - Welcome & Path Choice", 
+      "visual": "Main lab interior with two glowing pathways",
+      "playback": "chat-loop.mp4 (ambient lab atmosphere)",
+      "copy": "Welcome to The Lab, Visitor. What brings you here today?",
+      "cta": "Research Room / Visitor Tour",
+      "userInput": "selection", 
+      "branches": [4, 5],
+      "implementation": "Core branching point - splits user experience"
+    },
+    {
+      "id": 4,
+      "title": "Research Room - Interactive Lab Space",
+      "visual": "Research lab with 4 interactive stations",
+      "playback": "level2.mp4 (repurposed as research environment)",
+      "copy": "The Research Room. Explore the stations available to you:",
+      "cta": "Observatory / Work Bench / Notebook / Filing Cabinet",
+      "userInput": "selection",
+      "branches": [7, 8, 9, 10],
+      "implementation": "4 interactive elements with locked/unlocked states"
+    },
+    {
+      "id": 5,
+      "title": "Visitor Tour - Start",
+      "visual": "First Midjourney lab room - crystalline research space", 
+      "playback": "Custom Midjourney lab video 1",
+      "copy": "Let's begin your tour. This is our crystalline research chamber. While we walk, tell me: What drew you to try rose-colored glasses?",
+      "cta": "Continue Chat",
+      "userInput": "text",
+      "branches": [6],
+      "implementation": "Use existing chat system with new lab environment videos"
+    },
+    {
+      "id": 6,
+      "title": "Visitor Tour - Continued",
+      "visual": "Second Midjourney lab room - organic growth lab",
+      "playback": "Custom Midjourney lab video 2", 
+      "copy": "Fascinating response. Here's our organic perception lab. I'm curious - when you look at the world, what do you hope to see differently?",
+      "cta": "Continue Chat",
+      "userInput": "text",
+      "branches": [11],
+      "implementation": "Progressive chat with different lab environments"
+    },
+    {
+      "id": 7,
+      "title": "Observatory - Locked",
+      "visual": "Observatory door with participation lock",
+      "playback": "Locked door with subtle glow effect",
+      "copy": "🔒 Observatory Access - Participants Only. Complete the full experiment to unlock this space.",
+      "cta": "Learn How to Participate / Back to Research Room",
+      "userInput": "navigation",
+      "branches": [12, 4],
+      "implementation": "Simple locked state with upgrade path"
+    },
+    {
+      "id": 8,
+      "title": "Work Bench - Film Projector",
+      "visual": "Vintage lab projector setup",
+      "playback": "Projector startup animation",
+      "copy": "The film projector contains our experiment timeline. Choose a phase to explore:",
+      "cta": "Alpha Phase / Beta Phase / Delta Phase",
+      "userInput": "selection", 
+      "branches": [13, 14, 15],
+      "implementation": "Slideshow system using existing timeline content"
+    },
+    {
+      "id": 9,
+      "title": "Notebook - Specifications & Frames",
+      "visual": "Open laboratory notebook with detailed sketches",
+      "playback": "Page turning animation",
+      "copy": "The lab notebook contains our research specifications. [Pull existing website content about materials, lens specs, and frame details]",
+      "cta": "Back to Research Room / Continue Reading",
+      "userInput": "navigation",
+      "branches": [4, 4],
+      "implementation": "Display existing website content in notebook format"
+    },
+    {
+      "id": 10,
+      "title": "Filing Cabinet - Locked",
+      "visual": "Locked metal filing cabinet with warning labels",
+      "playback": "Subtle locked cabinet ambient",
+      "copy": "🔒 Lab Notes - Access Restricted. These files contain confidential research data.",
+      "cta": "Back to Research Room",
+      "userInput": "navigation", 
+      "branches": [4],
+      "implementation": "Simple locked state for future content"
+    },
+    {
+      "id": 11,
+      "title": "Visitor Tour - Final Room", 
+      "visual": "Third Midjourney lab room - infinite mirror space",
+      "playback": "Custom Midjourney lab video 3",
+      "copy": "This is our perception infinity chamber. One last question: If you could change how you see one thing in the world, what would it be?",
+      "cta": "Submit Response",
+      "userInput": "text",
+      "branches": [16],
+      "implementation": "Final tour interaction before conclusion"
+    },
+    {
+      "id": 12,
+      "title": "Participation Information",
+      "visual": "Participation enrollment interface",
+      "playback": "Information presentation video",
+      "copy": "Become a full participant to unlock Observatory access and advanced lab features.",
+      "cta": "Start Participation / Back to Research Room",
+      "userInput": "navigation",
+      "branches": [17, 4],
+      "implementation": "Upgrade path to full experiment participation"
+    },
+    {
+      "id": 13,
+      "title": "Alpha Phase Slideshow (2017-2018)",
+      "visual": "Projector displaying Alpha phase content",
+      "playback": "Alpha phase slideshow with existing content",
+      "copy": "The beginning. Raw experimentation and first discoveries.",
+      "cta": "Back to Projector / Next Phase",
+      "userInput": "navigation",
+      "branches": [8, 14],
+      "implementation": "Slideshow using existing Alpha phase content"
+    },
+    {
+      "id": 14,
+      "title": "Beta Phase Slideshow (2019-2024)", 
+      "visual": "Projector displaying Beta phase content",
+      "playback": "Beta phase slideshow with existing content",
+      "copy": "The growth phase. Community building and real-world testing.",
+      "cta": "Back to Projector / Next Phase",
+      "userInput": "navigation",
+      "branches": [8, 15],
+      "implementation": "Slideshow using existing Beta phase content"
+    },
+    {
+      "id": 15,
+      "title": "Delta Phase Slideshow (2022-2025)",
+      "visual": "Projector displaying current Delta phase",
+      "playback": "Delta phase slideshow with existing content", 
+      "copy": "The current evolution. AI integration and future vision.",
+      "cta": "Back to Projector / Back to Research Room",
+      "userInput": "navigation",
+      "branches": [8, 4],
+      "implementation": "Slideshow using existing Delta phase content"
+    },
+    {
+      "id": 16,
+      "title": "Tour Complete - Lab Exit",
+      "visual": "Lab exit portal with multiple destinations",
+      "playback": "Exit sequence with portal options",
+      "copy": "Your lab tour is complete. Thank you for sharing your perspective. Where would you like to go next?",
+      "cta": "Shop Glasses / Return to Experiment / Back to Atrium",
+      "userInput": "selection",
+      "branches": [18, 19, 3],
+      "implementation": "Multiple exit paths from tour experience"
+    },
+    {
+      "id": 17,
+      "title": "Participation Sign-Up",
+      "visual": "Enrollment interface",
+      "playback": "Sign-up process animation", 
+      "copy": "Ready to become a full participant? Begin your complete experiment journey here.",
+      "cta": "Begin Full Experiment / Back to Lab",
+      "userInput": "action",
+      "branches": [19, 4],
+      "implementation": "Link to main experiment participation flow"
+    },
+    {
+      "id": 18,
+      "title": "Shop Transition",
+      "visual": "Lab to shop transition",
+      "playback": "Smooth transition to product selection",
+      "copy": "Ready to begin your experiment? Choose your glasses.",
+      "cta": "Browse Collection",
+      "userInput": "redirect",
+      "branches": [],
+      "implementation": "Redirect to existing shop/frame selection"
+    },
+    {
+      "id": 19,
+      "title": "Return to Main Experiment", 
+      "visual": "Return transition",
+      "playback": "Seamless return to main flow",
+      "copy": "Continue your experiment journey.",
+      "cta": "Resume Experiment",
+      "userInput": "redirect", 
+      "branches": [],
+      "implementation": "Return to main MindJourney experiment flow"
+    }
+  ],
+  "metadata": {
+    "created": "2025-08-05",
+    "version": "V1-4Hour",
+    "buildTarget": "4 hours using existing infrastructure",
+    "totalSteps": 19,
+    "branchingPoints": 7,
+    "endPoints": 2,
+    "newAssetsNeeded": [
+      "3 Midjourney lab room videos for visitor tour",
+      "Lab entrance/atrium environment videos", 
+      "Projector slideshow animations"
+    ],
+    "existingAssetsReused": [
+      "level1-welcome.mp4",
+      "chat-loop.mp4", 
+      "level2.mp4",
+      "Chat system infrastructure",
+      "Video player components",
+      "Database branching system"
+    ]
+  }
+}
